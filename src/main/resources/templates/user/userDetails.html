@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+            integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous" defer></script>
+    <title>User Details</title>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/users}">
+                    <img width="40" height="40" src="https://img.icons8.com/ios-filled/50/long-arrow-left.png"
+                         alt="long-arrow-left"/>
+                </a>
+                <h1>User Details</h1>
+            </div>
+            <!-- Display errors if there are any -->
+            <div th:if="${errors}" class="alert alert-danger">
+                <p th:text="${errors}"></p>
+            </div>
+            <!-- Display success message if there is one -->
+            <div th:if="${success}" class="alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+            <form th:action="@{/users/process/{id}(id=${user.id})}" th:object="${updatableUser}" method="post">
+                <div class="container g-1 mb-4">
+                    <div class="col-md-auto mb-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" class="form-control" type="text" th:field="*{email}"
+                               placeholder="example@kanplan.com">
+                    </div>
+                    <div class="col-md-auto mb-2">
+                        <label for="password" class="form-label">New Password</label>
+                        <input id="password" class="form-control" type="password" th:field="*{password}">
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-secondary" name="action" value="update">Update</button>
+                    <button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!-- Pagination Controls -->
+<nav aria-label="User Pagination">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/users(pageNumber=${currentPage - 1}, sortDir=${sortDir}, sortBy=${sortBy}, pageElements=${pageElements})}">Previous</a>
+        </li>
+        <!-- Generate page number links -->
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:text="${i+1}"
+               th:href="@{/users(pageNumber=${i}, sortDir=${sortDir}, sortBy=${sortBy}, pageElements=${pageElements})}"></a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/users(pageNumber=${currentPage + 1}, sortDir=${sortDir}, sortBy=${sortBy}, pageElements=${pageElements})}">Next</a>
+        </li>
+    </ul>
+</nav>

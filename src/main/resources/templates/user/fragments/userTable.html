@@ -1,0 +1,26 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col" id="idHeader" data-sortby="id" data-sortdir="ASC" role="button">
+            Id
+        </th>
+        <th scope="col" id="emailHeader" data-sortby="email" data-sortdir="ASC" role="button">
+            Email
+        </th>
+        <th scope="col" id="createdHeader" data-sortby="createdDate" data-sortdir="ASC" role="button">
+            Created
+        </th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <th scope="row" th:text="${user.id}"></th>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.createdOn}"></td>
+        <td class="d-flex justify-content-center">
+            <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-primary">Select</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
