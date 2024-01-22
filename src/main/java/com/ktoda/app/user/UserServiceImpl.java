@@ -1,5 +1,11 @@
 package com.ktoda.app.user;
 
+import com.ktoda.app.event.Event;
+import com.ktoda.app.event.EventNotification;
+import com.ktoda.app.event.EventProperty;
+import com.ktoda.app.event.dto.EventCreateDTO;
+import com.ktoda.app.event.dto.EventDTO;
+import com.ktoda.app.password.PasswordService;
 import com.ktoda.app.user.dto.UserDTO;
 import com.ktoda.app.user.dto.UserDTOMapper;
 import com.ktoda.app.user.dto.UserRegistrationDTO;
@@ -26,6 +32,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserDTOMapper dtoMapper;
+    private final PasswordService passwordService;
 
     @Override
     public List<UserDTO> findAll(Sort sort) {
@@ -98,7 +105,10 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException("User already exists with this information");
         }
 
-        User user = new User(entity.email(), entity.password()); // TODO: Hash password
+        String rawPassword = entity.password();
+        String hashedPassword = passwordService.hash(rawPassword);
+        User user = new User(entity.email(), hashedPassword);
+
         return save(user);
     }
 
@@ -134,5 +144,50 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countAll() {
         return repository.count();
+    }
+
+    @Override
+    public UserDTO addEvent(long id, EventCreateDTO eventCreateDTO) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        EventProperty property = new EventProperty(
+                eventCreateDTO.property().date(),
+                eventCreateDTO.property().startTime(),
+                eventCreateDTO.property().endTime(),
+                eventCreateDTO.property().allDay()
+        );
+
+        EventNotification notification = new EventNotification(
+                eventCreateDTO.notification().interval(),
+                eventCreateDTO.notification().type()
+        );
+
+        Event event = new Event(eventCreateDTO.title(),
+                eventCreateDTO.description(),
+                eventCreateDTO.color(),
+                property,
+                notification);
+
+        user.addEvent(event);
+        return save(user);
+    }
+
+    @Override
+    public UserDTO removeEvent(long userId, long eventId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        Event eventToRemove = user.getEvents().stream()
+                .filter(e -> e.getId() == eventId)
+                .findFirst()
+                .orElse(null);
+
+        // If the event is found, remove it
+        if (eventToRemove != null) {
+            user.removeEvent(eventToRemove);
+        }
+
+        return save(user);
     }
 }

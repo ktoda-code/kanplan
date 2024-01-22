@@ -47,8 +47,8 @@ class UserServiceImplTest {
         long existingId = 1L;
         String email = "test@example.com";
         Instant instantNow = Instant.now();
-        User user = new User(existingId, email, "test123", instantNow);
-        UserDTO userDTO = new UserDTO(existingId, email, instantNow);
+        User user = new User(existingId, email, "test123", instantNow, null);
+        UserDTO userDTO = new UserDTO(existingId, email, instantNow,null);
         when(repository.findById(existingId)).thenReturn(Optional.of(user));
         when(dtoMapper.apply(user)).thenReturn(userDTO);
 
@@ -78,8 +78,8 @@ class UserServiceImplTest {
         long existingId = 1L;
         String existingEmail = "test@example.com";
         Instant instantNow = Instant.now();
-        User user = new User(existingId, existingEmail, "test123", instantNow);
-        UserDTO userDTO = new UserDTO(existingId, existingEmail, instantNow);
+        User user = new User(existingId, existingEmail, "test123", instantNow, null);
+        UserDTO userDTO = new UserDTO(existingId, existingEmail, instantNow,null);
         when(repository.findUserByEmail(existingEmail)).thenReturn(Optional.of(user));
         when(dtoMapper.apply(user)).thenReturn(userDTO);
 
@@ -118,9 +118,10 @@ class UserServiceImplTest {
                 id,
                 user.getEmail(),
                 user.getPassword(),
-                creationInstant
+                creationInstant,
+                null
         );
-        UserDTO userDTO = new UserDTO(id, savedUser.getEmail(), creationInstant);
+        UserDTO userDTO = new UserDTO(id, savedUser.getEmail(), creationInstant,null);
         when(service.existsByEmail(registrationDTO.email())).thenReturn(false);
         when(service.save(user)).thenReturn(userDTO);
 
@@ -169,15 +170,17 @@ class UserServiceImplTest {
                 1L,
                 emailToUpdate,
                 "oldPassword",
-                createdInstant
+                createdInstant,
+                null
         );
         User updatedUser = new User(
                 1L,
                 emailToUpdate,
                 userToUpdate.password(),
                 createdInstant
+                , null
         );
-        UserDTO userDTO = new UserDTO(1L, updatedUser.getEmail(), createdInstant);
+        UserDTO userDTO = new UserDTO(1L, updatedUser.getEmail(), createdInstant,null);
         when(repository.findById(userToUpdate.id())).thenReturn(Optional.of(existingUser));
         when(service.save(updatedUser)).thenReturn(userDTO);
 

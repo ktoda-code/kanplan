@@ -1,9 +1,8 @@
 package com.ktoda.app.user;
 
-import com.ktoda.app.common.exception.ExceptionResponse;
-import com.ktoda.app.user.dto.UserDTO;
-import com.ktoda.app.user.dto.UserRegistrationDTO;
-import com.ktoda.app.user.dto.UserUpdateDTO;
+import com.ktoda.app.event.dto.EventCreateDTO;
+import com.ktoda.app.event.dto.EventDTO;
+import com.ktoda.app.user.dto.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,6 +88,24 @@ public class UserRestController {
         return new ResponseEntity<>(
                 service.create(registrationDTO),
                 HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/{id}/add/event")
+    public ResponseEntity<UserDTO> addEvent(@PathVariable("id") long id,
+                                            @Valid @RequestBody EventCreateDTO eventCreateDTO) {
+        return new ResponseEntity<>(
+                service.addEvent(id, eventCreateDTO),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/{userId}/remove/event/{eventId}")
+    public ResponseEntity<UserDTO> removeEvent(@PathVariable("userId") long userId,
+                                               @PathVariable("eventId") long eventId) {
+        return new ResponseEntity<>(
+                service.removeEvent(userId, eventId),
+                HttpStatus.OK
         );
     }
 

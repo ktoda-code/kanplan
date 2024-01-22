@@ -9,10 +9,12 @@ import java.util.function.Function;
 public class UserDTOMapper implements Function<User, UserDTO> {
     @Override
     public UserDTO apply(User user) {
+        if (user == null) return null;
         return new UserDTO(
                 user.getId(),
                 user.getEmail(),
-                user.getCreatedDate()
+                user.getCreatedDate(),
+                user.getEvents()
         );
     }
 }

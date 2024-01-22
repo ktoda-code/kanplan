@@ -1,5 +1,7 @@
 package com.ktoda.app.user;
 
+import com.ktoda.app.event.dto.EventCreateDTO;
+import com.ktoda.app.event.dto.EventDTO;
 import com.ktoda.app.user.dto.UserDTO;
 import com.ktoda.app.user.dto.UserRegistrationDTO;
 import com.ktoda.app.user.dto.UserUpdateDTO;
@@ -8,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
@@ -35,4 +36,9 @@ public interface UserService {
     void deleteById(Long id);
 
     long countAll();
+
+    UserDTO addEvent(long id, EventCreateDTO event);
+
+    UserDTO removeEvent(long userId, long eventId);
+
 }

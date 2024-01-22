@@ -110,7 +110,7 @@ class UserServiceImplIntegrationTest {
     @Test
     void update_whenUserExists() {
         // Set up
-        User inDb = new User(1L, "user1@test.com", "user1", Instant.now());
+        User inDb = new User(1L, "user1@test.com", "user1", Instant.now(),null);
         User user = repository.save(inDb);
         assertThat(service.findAll()).hasSize(1);
 
@@ -146,7 +146,7 @@ class UserServiceImplIntegrationTest {
     @Test
     void deleteById_whenUserExists() {
         // Set up
-        User inDb = new User(1L, "user1@test.com", "user1", Instant.now());
+        User inDb = new User(1L, "user1@test.com", "user1", Instant.now(),null);
         User user = repository.save(inDb);
 
         assertThat(service.findAll()).hasSize(1);
